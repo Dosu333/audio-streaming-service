@@ -5,8 +5,21 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express()
 
+
+// middleware
+app.use(cors())
+app.options('*', cors())
+app.use(bodyParser.json());
+app.use(morgan('tiny'));
+
 // Environment variables
 require('dotenv/config');
+const api = process.env.API_URL;
+
+// Routes
+const userRoutes = require('./routers/user');
+
+app.use(`${api}/users`, userRoutes);
 
 
 app.listen(3000, () => {
