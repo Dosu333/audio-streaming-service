@@ -128,6 +128,36 @@ const userUpdate = async (req, res) => {
     }
 }
 
+
+// Delete user controller
+const deleteUser = async (req, res) => {
+    try {
+        // Find user
+        const user = await User.findByPk(req.params.id)
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                error: 'User not found'
+            })
+        }
+
+        // Delete user
+        await user.destroy()
+        return res.status(200).json({
+            success: true,
+            message: 'User successfully deleted'
+        })
+    } catch(error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Internal Server Error'
+        });
+    }
+}
+
+
 // Change user password controller
 const userChangePassword = async (req, res) => {
     try {
@@ -185,5 +215,6 @@ module.exports = {
     createUser,
     userDetail,
     userUpdate,
+    deleteUser,
     userChangePassword
 }
