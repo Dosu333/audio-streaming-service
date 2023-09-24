@@ -1,38 +1,12 @@
-const {User} = require('../models/user')
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const userController = require('../controllers/userController')
+const express = require('express')
 const router = express.Router();
 
-// Create user
-router.post('/', (req, res) => {
-    let user = User.create({
-        email: req.body.email,
-        fullName: req.body.fullname,
-        passwordHash: bcrypt.hashSync(req.body.password, 10)
-    })
-    .then(createdUser => {
-        if (!createdUser) {
-            return res.status(401).json({
-                success: false,
-                error: 'User could not be created'
-            })
-        }
-        return res.status(201).json(createdUser)
-    })
-    .catch(err => {
-        res.status(500).json({
-            success: false,
-            error: err
-        })
-    })
-}) 
 
-// List all users
-router.get('/', async (req, res) => {
-    return res.status(200).json({
-        success: true
-    })
-})
+router.post('/', userController.createUser) // Create user
+router.get('/', userController.listUsers) // List all users
+router.get('/:id', userController.userDetail) // Retrieve a user
+router.patch('/:id', userController.userUpdate) // Update a user
+router.patch('/change-password/:id', userController.userChangePassword) // Change a user password
 
 module.exports = router
