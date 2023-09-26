@@ -69,13 +69,8 @@ const createUser =  async (req, res) => {
 // Retrieve user controller
 const userDetail = async (req, res) => {
     try {
-        const user = await User.findByPk(req.params.id, { attributes: { exclude: ['passwordHash'] } })
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                error: 'User not found'
-            })
-        }
+        const user = await User.findByPk(req.user.id, { attributes: { exclude: ['passwordHash'] } })
+        
         return res.status(200).json(user);
     } catch(error) {
         console.error('Error retrieving user:', error);
@@ -91,14 +86,8 @@ const userDetail = async (req, res) => {
 const userUpdate = async (req, res) => {
     try {
         // Find user
-        const user = await User.findByPk(req.params.id)
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                error: 'User not found'
-            })
-        }
-
+        const user = await User.findByPk(req.user.id)
+    
         // Update user
         if (req.body.fullname) {
             user.fullName = req.body.fullname
@@ -162,13 +151,7 @@ const deleteUser = async (req, res) => {
 const userChangePassword = async (req, res) => {
     try {
         // Find user
-        const user = await User.findByPk(req.params.id)
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                error: 'User not found'
-            })
-        }
+        const user = await User.findByPk(req.user.id)
        
         // Check if the required fields were passed
         if (req.body.newpassword && req.body.oldpassword) {

@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const IsAuthenticated = async (req, res, next) => {
+const isAuthenticated = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -17,8 +17,8 @@ const IsAuthenticated = async (req, res, next) => {
       });
     }
     req.user = user;
-    console.log(user)
     next();
+
   } catch(error) {
     console.error('Error authenticating user:', error);
     res.status(500).json({
@@ -28,4 +28,4 @@ const IsAuthenticated = async (req, res, next) => {
     
 };
 
-module.exports = IsAuthenticated
+module.exports = isAuthenticated
