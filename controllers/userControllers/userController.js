@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../../models/user')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -149,7 +149,7 @@ const deleteUser = async (req, res) => {
             message: 'User successfully deleted'
         })
     } catch(error) {
-        console.error('Error updating user:', error);
+        console.error('Error deleting user:', error);
         res.status(500).json({
             success: false,
             error: 'Internal Server Error'
@@ -216,5 +216,5 @@ module.exports = {
     userDetail,
     userUpdate,
     deleteUser,
-    userChangePassword
+    userChangePassword,
 }

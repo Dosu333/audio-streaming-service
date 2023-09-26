@@ -17,7 +17,7 @@ require('dotenv/config');
 const api = process.env.API_URL;
 
 // Routes
-const userRoutes = require('./routers/user');
+const userRoutes = require('./routers/userRoute');
 
 app.use(`${api}/users`, userRoutes);
 

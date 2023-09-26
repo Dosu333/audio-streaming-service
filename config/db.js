@@ -1,9 +1,11 @@
 const { Sequelize } = require("sequelize")
+require('dotenv/config');
+
 let dbSettings = {
-  username: 'me',
-  database: 'audiostreamingdb',
-  password: 'password',
-  host: 'localhost',
+  username: process.env.DB_USERNAME,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
   dialect: 'postgres'
 }
 const sequelize = new Sequelize(dbSettings)
