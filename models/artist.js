@@ -1,7 +1,7 @@
 const { sq } = require("../config/postgresDb");
 const { DataTypes } = require("sequelize");
 
-const User = sq.define("user", {
+const Artist = sq.define("artist", {
     id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -13,22 +13,27 @@ const User = sq.define("user", {
       allowNull: false,
     },
   
-    fullName: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    passwordHash: {
+    label: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    image: {
+        type: DataTypes.BLOB,
+        allowNull: true,
     }
   });
+
 
 sq.beforeSync(async () => {
     await sq.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
    });
 
-User.sync().then(() => {
-    console.log("User Model synced");
+Artist.sync().then(() => {
+    console.log("Artist Model synced");
 });
 
-module.exports = User;
+module.exports = Artist;

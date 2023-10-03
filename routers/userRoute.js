@@ -1,5 +1,5 @@
-const authController = require('../controllers/userControllers/authController')
-const userController = require('../controllers/userControllers/userController')
+const authController = require('../controllers/auth')
+const userController = require('../controllers/user')
 const IsAuthenticated = require('../permissions/isAuthenticated')
 const express = require('express')
 const router = express.Router();

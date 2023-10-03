@@ -18,8 +18,10 @@ const api = process.env.API_URL;
 
 // Routes
 const userRoutes = require('./routers/userRoute');
+const songRoutes = require('./routers/songRoute');
 
 app.use(`${api}/users`, userRoutes);
+app.use(`${api}/songs`, songRoutes);
 
 
 app.listen(3000, () => {
