@@ -28,7 +28,7 @@ sq.beforeSync(async () => {
    });
 
 User.sync().then(() => {
-    console.log("User Model synced");
+  console.log("User Model synced");
 });
 
 module.exports = User;

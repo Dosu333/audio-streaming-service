@@ -1,38 +1,35 @@
 const { els } = require('../config/elasticsearchDb');
-const uploadSongToGCS = require('../models/song')
+const { Song, Album } = require('../models/index')
+
 
 // Create new song with metadata controller
 const createNewSong = async (req, res) => {
     try {
-        if (!req.body.artist || !req.body.name) {
+        if (!req.body.album || !req.body.title || !req.file) {
             return res.status(400).json({
                 success: false,
-                error: 'Artist name and song name are required'
+                error: 'Album name and song title are required'
             });
         }
 
-        const songUrl = await uploadSongToGCS(req.file.buffer, req.file.originalname);
+        // Check if the album exists
+        let album = await Album.findOne({ where: { id: req.body.album } });
+        if (!album) {
+            return res.status(400).json({
+                success: false,
+                error: 'create an album first'
+            })
+        }
 
-        const songData = {
-            artist: req.body.artist,
-            name: req.body.name,
-            recordLabel: req.body.recordLabel || '',
-            songFile: songUrl,
-            numberOfListens: 0,
-            numberOfListeners: 0,
-            likedByUser: [],
-        };
+        const newSong = await Song.create({
+            title: req.body.title,
+            songFile: req.file.buffer,
+            album: album.id,
+            tags: req.body.tags
+        })
 
-        const result = await els.index({
-            index: 'song-metadata',
-            body: songData, 
-        });
+        return res.status(201).send(newSong)
 
-        res.status(201).json({
-            success: true,
-            message: 'Song created successfully',
-            data: result,
-        });
     } catch (error) {
         console.error('Error creating a new song:', error);
         res.status(500).json({

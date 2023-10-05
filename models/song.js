@@ -1,8 +1,5 @@
 const { sq } = require("../config/postgresDb");
 const { DataTypes } = require("sequelize");
-const User = require('./user')
-const Album = require('./album')
-
 
 const Song = sq.define("song", {
     id: {
@@ -19,12 +16,16 @@ const Song = sq.define("song", {
         type: DataTypes.BLOB,
         allowNull: false,
     },
+    tags: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+        allowNull: true,
+        defaultValue: []
+    },
     numberOfListens: {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0
     },
-  
     numberOfListeners: {
       type: DataTypes.INTEGER,
       allowNull: false,

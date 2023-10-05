@@ -12,7 +12,6 @@ const Artist = sq.define("artist", {
       type: DataTypes.STRING,
       allowNull: false,
     },
-  
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -22,7 +21,7 @@ const Artist = sq.define("artist", {
         allowNull: false,
     },
     image: {
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
         allowNull: true,
     }
   });
@@ -32,8 +31,8 @@ sq.beforeSync(async () => {
     await sq.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
    });
 
-Artist.sync().then(() => {
-    console.log("Artist Model synced");
-});
+// Artist.sync({force: true}).then(() => {
+//     console.log("Artist Model synced");
+// });
 
 module.exports = Artist;
