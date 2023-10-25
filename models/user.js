@@ -1,4 +1,4 @@
-const { sq } = require("../config/postgresDb");
+const { sq } = require("../config/config");
 const { DataTypes } = require("sequelize");
 
 const User = sq.define("user", {
@@ -27,8 +27,8 @@ sq.beforeSync(async () => {
     await sq.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
    });
 
-User.sync().then(() => {
-  console.log("User Model synced");
-});
+// User.sync().then(() => {
+//   console.log("User Model synced");
+// });
 
 module.exports = User;

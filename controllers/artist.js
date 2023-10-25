@@ -1,5 +1,6 @@
 require('dotenv/config')
-const { els } = require('../config/elasticsearchDb');
+const imageUrl = require('../utils/imageUrl')
+const { els } = require('../config/elasticsearchConfig');
 const { Artist } = require('../models/index')
 
 
@@ -13,8 +14,8 @@ const createNewArtist = async (req, res) => {
             });
         }
 
-        let imageFilePath = `${process.env.CLIENT_URL}/${req.file.destination}/${req.file.filename}`
-        console.log('test------------------------', req.file.destination);
+        
+        let imageFilePath = await imageUrl(req.file.destination, req.file.filename)
 
         const newArtist = await Artist.create({
             name: req.body.name,

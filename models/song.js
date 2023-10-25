@@ -1,5 +1,6 @@
-const { sq } = require("../config/postgresDb");
+const { sq } = require("../config/config");
 const { DataTypes } = require("sequelize");
+const Album = require('./album')
 
 const Song = sq.define("song", {
     id: {
@@ -30,6 +31,15 @@ const Song = sq.define("song", {
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0
+    },
+    albumId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: Album,
+        key: 'id'
+      },
+      onDelete: 'CASCADE'
     }
   });
 
@@ -37,8 +47,8 @@ sq.beforeSync(async () => {
     await sq.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
    });
 
-Song.sync().then(() => {
-    console.log("Song Model synced");
-});
+// Song.sync().then(() => {
+//     console.log("Song Model synced");
+// });
 
 module.exports = Song;

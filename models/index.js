@@ -2,28 +2,28 @@ const User = require('./user')
 const Artist = require('./artist')
 const Album = require('./album')
 const Song = require('./song')
-
-User.belongsToMany(Song, { through: 'UserLikedSongs', as: 'likedSongs', foreignKey: 'userId' });
-Song.belongsTo(Album, { as: 'album' }); // Establish a belongsTo association with Album model
-Song.belongsToMany(User, { through: 'UserLikedSongs', as: 'likedByUsers', foreignKey: 'songId' });
-Album.belongsTo(Artist, { as: 'artist' }); // Establish a belongsTo association with Artist model
+const { sq } = require("../config/config");
 
 
-User.sync().then(() => {
-    console.log("User Model synced");
-});
+// Define associations
+User.belongsToMany(Song, { through: 'UserLikedSongs', as: 'likedSongs' });
+Song.belongsToMany(User, { through: 'UserLikedSongs', as: 'likedByUsers' });
 
-Artist.sync().then(() => {
-    console.log("Artist Model synced");
-});
+Album.hasOne(Song); // Each album can have one song
+Song.belongsTo(Album); // Each song belongs to one album
 
-Album.sync().then(() => {
-    console.log("Album Model synced");
-});
+Artist.hasOne(Album); // Each artist can have one album
+Album.belongsTo(Artist);
 
-Song.sync().then(() => {
-    console.log("Song Model synced");
-});
+// Sync  models
+(async () => {
+    try {
+        await sq.sync();
+        console.log("Database synchronized");
+    } catch (error) {
+        console.error("Error synchronizing models:", error);
+    }
+})();
 
 module.exports = {
     User,

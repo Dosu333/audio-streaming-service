@@ -1,4 +1,4 @@
-const { els } = require('../config/elasticsearchDb');
+const { els } = require('../config/elasticsearchConfig');
 const { Song, Album } = require('../models/index')
 
 
